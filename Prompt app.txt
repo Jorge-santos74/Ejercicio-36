@@ -1,0 +1,55 @@
+Prompt para copiar y pegar:
+Rol: Actúa como un Arquitecto de Software y Diseñador de Producto (Product Owner) experto en EdTech e Inteligencia Artificial.   
+PNG
+
+Objetivo: Ayúdame a estructurar y detallar la especificación técnica/funcional para un proyecto de aplicación educativa basado en los siguientes parámetros:   
+PNG
+
+Número / Proyecto: 36 - Ensayo de Admisión   
+PNG
+
+Categoría / Industria: Educación   
+PNG
+
+Problema a resolver: Los estudiantes llegan a la prueba de admisión sin haber practicado nunca en condiciones reales.   
+PNG
+
+Usuario Objetivo: Estudiante de tercer año de secundaria/bachillerato que va a postular a la universidad.   
+PNG
+
+Funciones Mínimas (MVP / P0 + M1):
+
+   
+PNG
+
+Banco de preguntas organizado por materia.   
+PNG
+
+Simulacro de examen cronometrado con puntaje final.   
+PNG
+
+Desglose detallado de resultados por área de conocimiento.   
+PNG
+
+Datos clave que maneja el sistema (M2): Respuestas del usuario, tiempo de resolución y puntaje obtenido.   
+PNG
+
+Funcionalidad Core con IA / Sello de IA (M5): La IA analiza los resultados, detecta el área más débil del estudiante, genera preguntas nuevas personalizadas para esa área y explica detenidamente la respuesta correcta. El estudiante debe verificar/completar 3 de estas preguntas generadas.   
+PNG
++ 1
+
+Persistencia / Dónde guardar: Historial de intentos con sus respectivos resultados.   
+PNG
+
+Por favor, genera lo siguiente:
+
+User Journey / Flujo de Usuario: Paso a paso de cómo el estudiante interactúa desde que entra a la app hasta que la IA le genera el refuerzo.
+
+Estructura de Base de Datos: Entidades principales y campos necesarios para almacenar usuarios, ensayos, preguntas y los intentos guardados.   
+PNG
+
+Prompt interno para la IA del sistema: Redacta el prompt del sistema que procesará el área débil del estudiante para generar las preguntas de refuerzo y sus explicaciones.   
+PNG
+
+Sugerencias de Wireframe / Interfaz: Describe la jerarquía visual para presentar el desglose de resultados por área y el módulo de refuerzo con IA.   
+PNG

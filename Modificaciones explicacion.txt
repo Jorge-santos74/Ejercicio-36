@@ -1,0 +1,57 @@
+La app ya tenía la estructura base de un simulacro de admisión. Se integraron de forma nativa en el sistema los 5 peldaños de mejora (M1 a M5): un Banco de Preguntas interactivo con práctica guiada y consultas socráticas a la IA, un Centro de Tutoría IA con radar de dominio y generador adaptativo a la carta de 3 preguntas, un sistema nativo de exportación/importación de respaldos en archivo JSON, adaptabilidad móvil completa para 320 px con un solo botón primario por pantalla, y blindaje contra errores (anti doble clic, advertencia de preguntas en blanco y fallback de contingencia offline).
+A continuación tienes el detalle unificado en texto de todos los cambios realizados:
+1. Archivos Nuevos y Modificados
+server.ts (Modificado):
+Se configuró el cliente @google/genai con modelo gemini-3.8-flash y User-Agent: aistudio-build.
+Se implementó el endpoint POST /api/reinforce con responseSchema estructurado obligatorio para devolver 3 preguntas con concepto clave, paso a paso y análisis de distractores.
+Se agregó el endpoint POST /api/tutor-explain para resolver dudas conceptuales puntuales de los alumnos sobre cualquier reactivo.
+Se incluyó el generador de contingencia generateFallbackQuestions para responder transparentemente si no hay conexión o API key.
+src/types/index.ts (Modificado):
+Modelado tipado de Question, QuestionOption, SubjectId, ExamAttempt, AreaResult, ReinforcementQuestion, ReinforcementSession y especificación técnica de base de datos y User Journey.
+src/components/Header.tsx (Modificado):
+Nueva barra de navegación con los 4 módulos funcionales principales: Simulador, Banco de Preguntas, Tutor IA e Historial, más acceso discreto a la documentación técnica.
+src/components/ExamLobby.tsx (Modificado):
+Se añadió el configurador de modalidades: Diagnóstico Rápido (8m), Simulacro Extendido (15m) y Ensayo Especializado por Materia.
+Botón de acción principal único y destacado conforme a M3.
+src/components/ActiveExam.tsx (Modificado):
+Temporizador regresivo en tiempo real con alerta visual de baja ansiedad en los últimos 2 minutos.
+Registro de tiempo por reactivo (timeSpentSec) y bandera de dudas ("Marcar para revisión").
+Modal preventivo de entrega que valida si existen preguntas sin responder antes de procesar el intento.
+Protección contra doble clic en la confirmación.
+src/components/ExamResultsView.tsx (Modificado):
+Cálculo de puntaje estandarizado de admisión (escala 100 a 1000 pts) y efectividad global.
+Desglose detallado por 4 materias con barra de dominio, tiempo medio y falencia cognitiva detectada.
+Banner de Área Crítica y llamada a la acción hacia el refuerzo de IA.
+src/components/AIReinforcementModule.tsx (Modificado):
+Ciclo interactivo obligatorio de 3 preguntas adaptativas generadas por IA.
+Verificación individual con retroalimentación socrática: concepto clave, pasos lógicos y trampas de los distractores.
+Celebración con confeti y adjudicación del sello de habilidad desbloqueada.
+src/components/QuestionBankView.tsx (Nuevo):
+Explorador del banco de preguntas con filtros por materia (Matemáticas, Lenguaje, Ciencias, Historia) y dificultad (fácil, medio, difícil).
+Modo práctica con comprobación inmediata y botón "Preguntar a Tutor IA".
+Acceso directo para simular la materia seleccionada.
+src/components/AITutorCenter.tsx (Nuevo):
+Radar de porcentaje de dominio por materia calculado sobre los ensayos rendidos.
+Generador de 3 preguntas de refuerzo a la carta sobre cualquier tema escrito por el alumno.
+Consultor conceptual para buscar fórmulas o definiciones con el tutor IA.
+src/components/HistoryView.tsx (Modificado):
+Persistencia en localStorage bajo la clave 'ensayo_admision_attempts_v1'.
+Función «Exportar JSON» para descargar el archivo de respaldo ensayo_admision_respaldo_YYYY-MM-DD.json.
+Función «Restaurar Copia» con lector FileReader y validación de esquema con bloque try/catch.
+Botón «Cargar datos de ejemplo» para pruebas inmediatas y estado vacío descriptivo.
+src/App.tsx (Modificado):
+Integración centralizada de estados, navegación entre módulos, cálculo psicométrico de puntajes y persistencia bidireccional.
+2. Prueba Manual de Tres Pasos para Comprobar los Cambios
+Paso 1 (Simulacro y Desglose - M1 y M3):
+Entra a la pestaña «Simulador», presiona «Comenzar Simulacro», responde las preguntas alternando opciones y entrega. Verifica que la pantalla de resultados muestre tu puntaje sobre 1000 pts y el desglose de las 4 materias identificando el área más débil.
+Paso 2 (Refuerzo IA con Salida Estructurada - M5):
+Haz clic en «Resolver 3 Preguntas de Refuerzo IA». Comprueba que la IA cargue las 3 preguntas adaptativas, responde una de ellas y verifica que despliegue el concepto clave, los pasos de resolución y por qué eran falsos los distractores.
+Paso 3 (Persistencia y Respaldo JSON - M2 y M4):
+Ve a la pestaña «Historial», comprueba que tu ensayo figure en la lista, presiona «Exportar JSON» para verificar la descarga del archivo, recarga la página completamente (F5) y constata que los datos siguen ahí intactos.
+3. Qué Podría Romperse y Medidas de Protección Implementadas
+Riesgo: Si no hay conexión o no existe GEMINI_API_KEY, la generación del refuerzo podría colgarse en un bucle de carga infinito.
+Solución aplicada: El servidor intercepta cualquier fallo y conmuta de inmediato al motor pedagógico local calibrado sin congelar la interfaz del alumno.
+Riesgo: Si el usuario sube un archivo corrupto al restaurar copia, JSON.parse podría quebrar la aplicación.
+Solución aplicada: Se envolvió la carga en un bloque try/catch con validación de estructura que muestra un mensaje en español si el archivo es inválido, sin alterar los datos actuales.
+Riesgo: El estudiante podría hacer doble clic en «Entregar Ensayo» y registrar duplicados en el historial.
+Solución aplicada: Desactivación inmediata del botón tras el primer clic (disabled) y bloqueo del estado hasta la redirección.
