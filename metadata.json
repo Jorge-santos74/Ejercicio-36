@@ -1,0 +1,8 @@
+{
+  "name": "Ensayo de Admisión - Simulador & Especificación EdTech IA",
+  "description": "Plataforma de simulacros cronometrados de admisión universitaria con diagnóstico por áreas de conocimiento y motor de refuerzo adaptativo con IA.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
